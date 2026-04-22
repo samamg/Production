@@ -25,7 +25,6 @@ async function getJob(id) {
 onMounted(async () => {
     const route = useRoute()
     state.job = await getJob(route.params.id)
-    console.log(state.job, 'job=============')
 })
 </script>
 <template>
