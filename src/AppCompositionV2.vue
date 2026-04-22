@@ -1,43 +1,43 @@
 <script setup>
-import { onMounted, onUpdated, ref } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const name = 'John Doe'
 const status = ref('active')
 const newTask = ref('')
 const tasks = ref([])
 const googleLink = 'https://www.google.com'
-const toggleStatus = () => {
+function toggleStatus() {
   switch (status.value) {
     case 'active':
-      status.value = 'pending'
-      break
+      status.value = 'pending';
+      break;
     case 'pending':
-      status.value = 'inactive'
-      break
+      status.value = 'inactive';
+      break;
     default:
-      status.value = 'active'
+      status.value = 'active';
   }
 }
-const addTask = () => {
+function addTask() {
   if (newTask.value.trim() !== '') {
-    tasks.value.push(newTask.value)
-    newTask.value = ''
+    tasks.value.push(newTask.value);
+    newTask.value = '';
   } else {
-    alert('Please enter task name!')
+    alert('Please enter task name!');
   }
 }
 
-const deleteTask = (index) => {
+function deleteTask(index) {
   // tasks.value = tasks.value.filter((_v, idx) => idx !== index)
-  tasks.value.splice(index, 1)
+  tasks.value.splice(index, 1);
 }
-const fetchTodo = async () => {
+async function fetchTodo() {
   try {
-    const resp = await fetch('https://jsonplaceholder.typicode.com/todos')
-    const todos = await resp.json()
-    tasks.value = todos.map((todo) => todo.title)
+    const resp = await fetch('https://jsonplaceholder.typicode.com/todos');
+    const todos = await resp.json();
+    tasks.value = todos.map((todo) => todo.title);
   } catch (error) {
-    console.log('Error fetching data', error)
+    console.log('Error fetching data', error);
   }
 }
 onMounted(async () => {
