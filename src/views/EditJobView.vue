@@ -1,51 +1,72 @@
 <script setup>
 import axios from 'axios';
-import { reactive } from 'vue';
+import { computed, onMounted, reactive } from 'vue';
+import { useRoute } from 'vue-router';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
-const state = reactive({
-    isLoading: true
-})
 const router = useRouter()
+const route = useRoute()
 const toast = useToast()
-const form = reactive({
-    title: '',
-    type: 'Full-Time',
-    description: '',
-    location: '',
-    salary: 'Under $50K',
-    company: {
-        name: '',
+const jobId = computed(() => route.params.id || '')
+const state = reactive({
+    isLoading: true,
+    job: {
+        title: '',
+        type: 'Full-Time',
         description: '',
-        contactEmail: '',
-        contactPhone: ''
+        location: '',
+        salary: 'Under $50K',
+        company: {
+            name: '',
+            description: '',
+            contactEmail: '',
+            contactPhone: ''
+        }
     }
-});
+})
+
+async function getJob(id) {
+    try {
+        const resp = await axios.get(`/api/jobs/${id}`)
+        return resp.data
+    } catch (error) {
+        console.log('create error', error)
+        toast.error('No data found')
+        return {
+            company: {}
+        }
+    } finally {
+        state.isLoading = false
+    }
+}
 async function handleSubmit() {
     try {
-        const resp = await axios.post(`/api/jobs`, form)
-        toast.success('Job Added Successfully')
+        const resp = await axios.put(`/api/jobs/${jobId.value}`, state.job)
+        toast.success('Job Updated Successfully')
         router.push(`/jobs/${resp.data.id}`)
         return resp.data
     } catch (error) {
         console.log('create error', error)
-        toast.error('Job Was Not Added')
+        toast.error('Job Was Not Updated')
         return {}
     } finally {
         state.isLoading = false
     }
 }
+onMounted(async () => {
+    state.job = await getJob(jobId.value)
+})
 </script>
 <template>
     <section class="bg-green-50">
         <div class="container m-auto max-w-2xl py-24">
             <div class="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
                 <form @submit.prevent="handleSubmit">
-                    <h2 class="text-3xl text-center font-semibold mb-6">Add Job</h2>
+                    <h2 class="text-3xl text-center font-semibold mb-6">Edit Job</h2>
 
                     <div class="mb-4">
                         <label for="type" class="block text-gray-700 font-bold mb-2">Job Type</label>
-                        <select v-model="form.type" id="type" name="type" class="border rounded w-full py-2 px-3"
+                        <select v-model="state.job.type" id="type" name="type" class="border rounded w-full py-2 px-3"
                             required>
                             <option value="Full-Time">Full-Time</option>
                             <option value="Part-Time">Part-Time</option>
@@ -56,21 +77,21 @@ async function handleSubmit() {
 
                     <div class="mb-4">
                         <label class="block text-gray-700 font-bold mb-2">Job Listing Name</label>
-                        <input v-model="form.title" type="text" id="name" name="name"
+                        <input v-model="state.job.title" type="text" id="name" name="name"
                             class="border rounded w-full py-2 px-3 mb-2" placeholder="eg. Beautiful Apartment In Miami"
                             required />
                     </div>
                     <div class="mb-4">
                         <label for="description" class="block text-gray-700 font-bold mb-2">Description</label>
-                        <textarea v-model="form.description" id="description" name="description"
+                        <textarea v-model="state.job.description" id="description" name="description"
                             class="border rounded w-full py-2 px-3" rows="4"
                             placeholder="Add any job duties, expectations, requirements, etc"></textarea>
                     </div>
 
                     <div class="mb-4">
                         <label for="type" class="block text-gray-700 font-bold mb-2">Salary</label>
-                        <select v-model="form.salary" id="salary" name="salary" class="border rounded w-full py-2 px-3"
-                            required>
+                        <select v-model="state.job.salary" id="salary" name="salary"
+                            class="border rounded w-full py-2 px-3" required>
                             <option value="Under $50K">under $50K</option>
                             <option value="$50K - $60K">$50 - $60K</option>
                             <option value="$60K - $70K">$60 - $70K</option>
@@ -89,7 +110,7 @@ async function handleSubmit() {
                         <label class="block text-gray-700 font-bold mb-2">
                             Location
                         </label>
-                        <input v-model="form.location" type="text" id="location" name="location"
+                        <input v-model="state.job.location" type="text" id="location" name="location"
                             class="border rounded w-full py-2 px-3 mb-2" placeholder="Company Location" required />
                     </div>
 
@@ -97,35 +118,36 @@ async function handleSubmit() {
 
                     <div class="mb-4">
                         <label for="company" class="block text-gray-700 font-bold mb-2">Company Name</label>
-                        <input v-model="form.company.name" type="text" id="company" name="company"
+                        <input v-model="state.job.company.name" type="text" id="company" name="company"
                             class="border rounded w-full py-2 px-3" placeholder="Company Name" />
                     </div>
 
                     <div class="mb-4">
                         <label for="company_description" class="block text-gray-700 font-bold mb-2">Company
                             Description</label>
-                        <textarea v-model="form.company.description" id="company_description" name="company_description"
-                            class="border rounded w-full py-2 px-3" rows="4"
+                        <textarea v-model="state.job.company.description" id="company_description"
+                            name="company_description" class="border rounded w-full py-2 px-3" rows="4"
                             placeholder="What does your company do?"></textarea>
                     </div>
 
                     <div class="mb-4">
                         <label for="contact_email" class="block text-gray-700 font-bold mb-2">Contact Email</label>
-                        <input v-model="form.company.contactEmail" type="email" id="contact_email" name="contact_email"
-                            class="border rounded w-full py-2 px-3" placeholder="Email address for applicants"
-                            required />
+                        <input v-model="state.job.company.contactEmail" type="email" id="contact_email"
+                            name="contact_email" class="border rounded w-full py-2 px-3"
+                            placeholder="Email address for applicants" required />
                     </div>
                     <div class="mb-4">
                         <label for="contact_phone" class="block text-gray-700 font-bold mb-2">Contact Phone</label>
-                        <input v-model="form.company.contactPhone" type="tel" id="contact_phone" name="contact_phone"
-                            class="border rounded w-full py-2 px-3" placeholder="Optional phone for applicants" />
+                        <input v-model="state.job.company.contactPhone" type="tel" id="contact_phone"
+                            name="contact_phone" class="border rounded w-full py-2 px-3"
+                            placeholder="Optional phone for applicants" />
                     </div>
 
                     <div>
                         <button
                             class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                             type="submit">
-                            Add Job
+                            Save Job
                         </button>
                     </div>
                 </form>

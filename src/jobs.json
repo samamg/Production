@@ -1,26 +1,12 @@
 {
   "jobs": [
     {
-      "id": "1",
-      "title": "Senior Vue Developer",
-      "type": "Full-Time",
-      "description": "We are seeking a talented Front-End Developer to join our team in Boston, MA. The ideal candidate will have strong skills in HTML, CSS, and JavaScript, with experience working with modern JavaScript frameworks such as Vue or Angular.",
-      "location": "Boston, MA",
-      "salary": "$70K - $80K",
-      "company": {
-        "name": "NewTek Solutions",
-        "description": "NewTek Solutions is a leading technology company specializing in web development and digital solutions. We pride ourselves on delivering high-quality products and services to our clients while fostering a collaborative and innovative work environment.",
-        "contactEmail": "contact@teksolutions.com",
-        "contactPhone": "555-555-5555"
-      }
-    },
-    {
       "id": "2",
       "title": "Front-End Engineer (Vue)",
       "type": "Full-Time",
       "description": "Join our team as a Front-End Developer in sunny Miami, FL. We are looking for a motivated individual with a passion for crafting beautiful and responsive web applications. Experience with UI/UX design principles and a strong attention to detail are highly desirable.",
       "location": "Miami, FL",
-      "salary": "$70K - $80K",
+      "salary": "Over $200K",
       "company": {
         "name": "Veneer Solutions",
         "description": "Veneer Solutions is a creative agency specializing in digital design and development. Our team is dedicated to pushing the boundaries of creativity and innovation to deliver exceptional results for our clients.",
@@ -83,34 +69,6 @@
         "contactEmail": "contact@ipsumlorem.com",
         "contactPhone": "555-555-5555"
       }
-    },
-    {
-      "title": "test",
-      "type": "Full-Time",
-      "description": "test",
-      "location": "test",
-      "salary": "Under $50K",
-      "company": {
-        "name": "dfd",
-        "description": "dfd",
-        "contactEmail": "fd@mail.com",
-        "contactPhone": "rtest"
-      },
-      "id": "hhNZD7G_A4g"
-    },
-    {
-      "title": "test",
-      "type": "Full-Time",
-      "description": "test",
-      "location": "test",
-      "salary": "Under $50K",
-      "company": {
-        "name": "dfd",
-        "description": "dfd",
-        "contactEmail": "fd@mail.com",
-        "contactPhone": "rtest"
-      },
-      "id": "X8Q72ph2E2M"
     }
   ],
   "$schema": "./node_modules/json-server/schema.json"
