@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:match*",
+      "destination": "https://json-server-phi-kohl.vercel.app*"
+    }
+  ]
+}
