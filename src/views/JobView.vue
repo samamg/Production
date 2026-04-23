@@ -1,7 +1,7 @@
 <script setup>
 import BackButton from '@/components/BackButton.vue'
 import PulseLoader from '@/components/PulseLoader.vue'
-import axios from 'axios'
+import api from '@/http-client'
 import { onMounted, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { useRoute } from 'vue-router'
@@ -17,7 +17,7 @@ const state = reactive({
 
 async function getJob(id) {
     try {
-        const resp = await axios.get(`/api/jobs/${id}`)
+        const resp = await api.get(`/jobs/${id}`)
         return await resp.data
     } catch (error) {
         console.log('fetch error', error)
@@ -31,7 +31,7 @@ async function deleteJob() {
     try {
         const confirm = window.confirm('Are you sure you want to delete this job?')
         if (confirm) {
-            await axios.delete(`/api/jobs/${state.job.id}`)
+            await api.delete(`/jobs/${state.job.id}`)
             // Navigate to job listing
             router.push('/jobs')
             // Show alert to user

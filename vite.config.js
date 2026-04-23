@@ -14,13 +14,6 @@ export default defineConfig({
   ],
   server: {
     port: 3000,
-    proxy: {
-      '/api': {
-        target: 'https://json-server-phi-kohl.vercel.app',
-        changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, '')
-      }
-    },
     watch: {
       ignored: ['**/src/jobs.json']
     }

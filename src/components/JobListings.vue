@@ -2,7 +2,7 @@
 import { onMounted, reactive, ref } from "vue";
 import JobListing from "./JobListing.vue";
 import PulseLoader from "./PulseLoader.vue";
-import axios from "axios";
+import api from "@/http-client";
 
 const state = reactive({
     jobs: [],
@@ -17,7 +17,7 @@ defineProps({
 })
 async function listJobs() {
     try {
-        const resp = await axios.get("/api/jobs",)
+        const resp = await api.get("/jobs",)
         return resp.data
     } catch (error) {
         console.log('fetch error', error)
