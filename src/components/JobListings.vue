@@ -16,7 +16,7 @@ defineProps({
 })
 async function listJobs() {
     try {
-        const resp = await fetch("http://localhost:8000/jobs")
+        const resp = await fetch("/api/jobs")
         const data = await resp.json()
         if (data.error) {
             throw "Error"

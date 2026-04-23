@@ -1,23 +1,24 @@
 <script setup>
+import BackButton from '@/components/BackButton.vue'
 import PulseLoader from '@/components/PulseLoader.vue'
+import axios from 'axios'
 import { onMounted, reactive } from 'vue'
 import { useRoute } from 'vue-router'
 
 const state = reactive({
-    job: {},
+    job: {
+        company: {}
+    },
     isLoading: true
 })
+
 async function getJob(id) {
     try {
-        const resp = await fetch(`http://localhost:8000/jobs/${id}`)
-        const data = await resp.json()
-        if (data.error) {
-            throw "Error"
-        }
-        return data
+        const resp = await axios.get(`/api/jobs/${id}`)
+        return await resp.data
     } catch (error) {
         console.log('fetch error', error)
-        return {}
+        return { company: {} }
     } finally {
         state.isLoading = false
     }
@@ -28,6 +29,7 @@ onMounted(async () => {
 })
 </script>
 <template>
+    <BackButton />
     <section v-if="!state.isLoading" class="bg-green-50">
         <div class="container m-auto py-10 px-6">
             <div class="grid grid-cols-1 md:grid-cols-70/30 w-full gap-6">
@@ -35,7 +37,7 @@ onMounted(async () => {
                     <div class="bg-white p-6 rounded-lg shadow-md text-center md:text-left">
                         <div class="text-gray-500 mb-4">{{ state.job.type }}</div>
                         <h1 class="text-3xl font-bold mb-4">{{ state.job.title }}</h1>
-                        <div class="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
+                        <div class="text-gray-500 mb-4 flex align-middle items-center justify-center md:justify-start">
                             <i class="pi pi-map-marker text-orange-700 mr-2"></i>
                             <p class="text-orange-700">{{ state.job.location }}</p>
                         </div>
@@ -59,7 +61,6 @@ onMounted(async () => {
                     <!-- Company Info -->
                     <div class="bg-white p-6 rounded-lg shadow-md">
                         <h3 class="text-xl font-bold mb-6">Company Info</h3>
-                        {{ state.job.company }}
                         <h2 class="text-2xl"> {{ state.job.company.name }} </h2>
 
                         <p class="my-2"> {{ state.job.company.description }} </p>
