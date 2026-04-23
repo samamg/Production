@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/server.js": {
+      "includeFiles": "db.json"
+    }
+  },
+  "rewrites": [{ "source": "/(.*)", "destination": "api/server.js" }]
+}
