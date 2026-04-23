@@ -2,6 +2,7 @@
 import { onMounted, reactive, ref } from "vue";
 import JobListing from "./JobListing.vue";
 import PulseLoader from "./PulseLoader.vue";
+import axios from "axios";
 
 const state = reactive({
     jobs: [],
@@ -16,12 +17,12 @@ defineProps({
 })
 async function listJobs() {
     try {
-        const resp = await fetch("/api/jobs")
-        const data = await resp.json()
-        if (data.error) {
-            throw "Error"
-        }
-        return data
+        const resp = await axios.get("/api/jobs", {
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        })
+        return resp.data
     } catch (error) {
         console.log('fetch error', error)
         return []

@@ -17,7 +17,11 @@ const state = reactive({
 
 async function getJob(id) {
     try {
-        const resp = await axios.get(`/api/jobs/${id}`)
+        const resp = await axios.get(`/api/jobs/${id}`, {
+            headers: {
+                'ngrok-skip-browser-warning': 'true'
+            }
+        })
         return await resp.data
     } catch (error) {
         console.log('fetch error', error)
@@ -31,7 +35,11 @@ async function deleteJob() {
     try {
         const confirm = window.confirm('Are you sure you want to delete this job?')
         if (confirm) {
-            await axios.delete(`/api/jobs/${state.job.id}`)
+            await axios.delete(`/api/jobs/${state.job.id}`, {
+                headers: {
+                    'ngrok-skip-browser-warning': 'true'
+                }
+            })
             // Navigate to job listing
             router.push('/jobs')
             // Show alert to user
