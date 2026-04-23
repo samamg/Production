@@ -17,11 +17,7 @@ defineProps({
 })
 async function listJobs() {
     try {
-        const resp = await axios.get("/api/jobs", {
-            headers: {
-                'ngrok-skip-browser-warning': 'true'
-            }
-        })
+        const resp = await axios.get("/api/jobs",)
         return resp.data
     } catch (error) {
         console.log('fetch error', error)

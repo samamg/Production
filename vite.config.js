@@ -16,7 +16,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/api': {
-        target: 'https://bf1d-136-228-129-250.ngrok-free.app',
+        target: 'https://json-server-phi-kohl.vercel.app',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, '')
       }

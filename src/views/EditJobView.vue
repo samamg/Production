@@ -27,11 +27,7 @@ const state = reactive({
 
 async function getJob(id) {
     try {
-        const resp = await axios.get(`/api/jobs/${id}`, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true'
-            }
-        })
+        const resp = await axios.get(`/api/jobs/${id}`)
         return resp.data
     } catch (error) {
         console.log('create error', error)
@@ -45,11 +41,7 @@ async function getJob(id) {
 }
 async function handleSubmit() {
     try {
-        const resp = await axios.put(`/api/jobs/${jobId.value}`, state.job, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true'
-            }
-        })
+        const resp = await axios.put(`/api/jobs/${jobId.value}`, state.job)
         toast.success('Job Updated Successfully')
         router.push(`/jobs/${resp.data.id}`)
         return resp.data

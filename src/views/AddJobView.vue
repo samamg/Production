@@ -23,11 +23,7 @@ const form = reactive({
 });
 async function handleSubmit() {
     try {
-        const resp = await axios.post(`/api/jobs`, form, {
-            headers: {
-                'ngrok-skip-browser-warning': 'true'
-            }
-        })
+        const resp = await axios.post(`/api/jobs`, form)
         toast.success('Job Added Successfully')
         router.push(`/jobs/${resp.data.id}`)
         return resp.data
